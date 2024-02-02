@@ -1,0 +1,272 @@
+{% extends 'DreamedJobAI/user/base-user.html' %}
+
+{%block content%}
+
+<section class="section">
+    <div class="container-fluid mt-5">
+        <div class="row align-items-center">
+            <div class="col-lg-12 d-flex">
+                <h1 class="home-title pb-3">Reto 2</h1>
+            </div>
+            <br>
+        </div>
+    </div>
+</section>
+<!-- SUCCESS & ERROR MESSAGES -->
+<section class="section">
+    <div class="row mt-3">
+        <div class="col-lg-12">
+
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+<section>
+    <div class="p-3 row">
+        
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <!-- Bordered Tabs -->
+                    <ul class="nav nav-pills nav-fill">
+
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-cv"> 1. Sube el diagnóstico del empleado </button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#skills"> 2. Obten actividades recomendadas para el paciente</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content pt-2">
+                        
+                        <!-- CV -->
+                        <div class="tab-pane fade pt-3 tab-pane fade show active" id="profile-cv">
+                            <form method="post" enctype="multipart/form-data" id="cv-form">
+                                {% csrf_token %}
+
+                                <div class="container">
+                                    <div class="row mt-3">
+                                        <div class="col-lg-12 text-center mb-3">
+                                            <button type="button" class="btn btn-profile-modal" data-bs-toggle="modal" data-bs-target="#chooselocalpdf">
+                                                Sube el diagnóstico
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-center">
+                                            {% if profile_cv.pdf_file %}
+
+                                            <a href="{{ user_cv }}" target="_blank" class="btn btn-success btn-md bi bi-check-circle me-1">
+                                                <svg class="bi pe-none" fill="#fff" width="24" height="24" role="img" aria-label="help"><use xlink:href="#bi-check-circle"/>
+                                                </svg>
+                                                Ve el diagnóstico
+                                            </a>
+                                            {% else %}
+                                            <span class="badge bg-danger fs-6">
+                                                <i class="me-1">
+                                                    <svg class="bi pe-none" fill="#fff" width="24" height="24" role="img" aria-label="help"><use xlink:href="#bi-exclamation-circle"/></svg>
+                                                </i>No se ha subido diagnóstico
+                                            </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade" id="chooselocalpdf" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Sube el diagnóstico</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                {% for field in cv_form %}
+                                                <div id="form-local-pdf" class="mb-3">                                                
+                                                    {% if field.name == 'pdf_file' %}
+                                                    <input type="file" class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}">
+                                                    {% elif field.field.widget.input_type == 'file' %}
+                                                    <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}">
+                                                    {% else %}
+                                                    <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}" value="{{ field.value }}">
+                                                    {% endif %}
+                                                </div>
+                                                {% endfor %}
+                                                <div id="loading" class="d-none text-center">
+                                                    <div class="spinner-border text-primary" role="status">
+                                                        <span class="visually-hidden"></span>
+                                                    </div>
+                                                    <p>Guardando el archivo</p>
+                                                    <p>Esto tomará un minuto. No actualices la página.</p>
+                                                </div>
+                                            </div>
+                                            <div id="modal-footer-local-pdf" class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cierra</button>
+                                                <button type="submit" id="submit-button" class="btn btn-profile-modal">Mandar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div><!-- End CV -->
+                        
+                        <!-- DPO -->
+                        <div class="tab-pane fade pt-3 tab-pane fade" id="skills">
+                            <div class="container">
+                                <div class="row mt-3">
+                                    <div class="col-md-12 text-center mb-3">
+                                        <button type="button" class="btn btn-profile-modal" id="ExtractSkills">
+                                            Actividades para el paciente
+                                        </button>
+                                    </div>
+                                    <div class="col-md-12 text-center mt-5" id="skillsList">
+                                        <!-- Generated skills go here -->
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <div id="loading-skills" class="d-none text-center">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden"></span>
+                                            </div>
+                                            <p>Obteniendo actividades para el paciente...</p>
+                                            <p>Esto tomará un minuto. No actualices la página.</p>
+                                        </div>
+                                        <div id="error-args" class="alert alert-danger mt-3 d-none text-center">
+                                        </div>
+                                        <div id="error-function" class="alert alert-danger mt-3 d-none text-center">
+                                            <p>An error occurred while processing your request. Please try again later.</p>
+                                        </div>
+                                        <div id="loading-saving-skills" class="d-none text-center">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden"></span>
+                                            </div>
+                                            <p>Saving your confirmed skills...</p>
+                                            <p>This might take a minute. Please do not refresh the page.</p>
+                                        </div>
+                                        <div id="error-args" class="alert alert-danger mt-3 d-none text-center">
+                                        </div>
+                                        <div id="error-function" class="alert alert-danger mt-3 d-none text-center">
+                                            <p>An error occurred while processing your request. Please try again later.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End Skills -->
+                    </div><!-- End Bordered Tabs -->
+                </div>
+            </div>
+        </div><!-- End main grid -->
+    </div><!-- End row -->
+</section>
+<br><br><br><br><br><br><br><br><br><br><br>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+
+    $("#ExtractSkills").click(function(){
+        // Show the loading indicator and message
+        $("#loading-skills").removeClass("d-none");
+
+        $.ajax({
+            url: '/profile-user/',
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'action': 'ExtractSkills'
+            },
+            success: function(response){
+                if(response.skills){
+                    // Hide the loading indicator when the request is complete
+                    $("#loading-skills").addClass("d-none");
+
+                    // Clear any previous skills
+                    $("#skillsList").empty();
+
+                    // Render each skill as a button or checkbox
+                    response.skills.forEach(function(skill, index){
+                        var skillItem = $('<button/>', {
+                            text: skill, // The text of the button will be the skill
+                            id: 'skill_' + index,
+                            click: function(){ $(this).toggleClass('active'); } // Toggle 'selected' class on click
+                        }).addClass('btn btn-primary m-1');
+
+                        // Append the skill button to the skills list container
+                        $("#skillsList").append(skillItem);
+                    });
+
+                    // Append a confirm button after the list
+                    var confirmButton = $('<button/>', {
+                        text: 'Confirm Selected Skills',
+                        id: 'confirmSkills',
+                        click: function(){ confirmSkills(); }
+                    }).addClass('btn btn-success mt-3');
+
+                    $("#skillsList").append(confirmButton);
+
+                } else {
+                    $("#loading-skills").addClass("d-none");
+                    $("#error-function").text(response.error_message);
+                    $("#error-function").removeClass("d-none");
+                }
+            },
+            error: function(xhr, status, error){
+                $("#loading-skills").addClass("d-none");
+                $("#ExtractSkills").show();
+                var errorMessage = JSON.parse(xhr.responseText).error_message;
+                $("#error-args").text(errorMessage);
+                $("#error-args").removeClass("d-none");
+            }
+        });
+    });
+    function confirmSkills(){
+        var selectedSkills = [];
+        $('#skillsList button.active').each(function(){
+            selectedSkills.push($(this).text());
+        });
+
+        $("#skillsList").addClass("d-none");
+
+        $("#loading-saving-skills").removeClass("d-none");
+
+        // Send the selected skills to the server
+        $.ajax({
+            url: '/profile-user/', // Update with the correct URL
+            type: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}' // Ensure the CSRF token is included in the header
+            },
+            contentType: 'application/json', // Set the content type to JSON
+            data: JSON.stringify({
+                'confirmed_skills': selectedSkills,
+                'action': 'ConfirmedSkills'
+            }),
+            success: function(response){
+                if(response.status === 'success'){
+                    $("#loading-saving-skills").addClass("d-none");
+                    $("#success-skills").removeClass("d-none");
+
+                } else {
+                    $("#loading-saving-skills").addClass("d-none");
+                    $("#error-function").text(response.error_message);
+                    $("#error-function").removeClass("d-none");
+                }
+            },
+            error: function(xhr, status, error){
+                $("#loading-saving-skills").addClass("d-none");
+                var errorMessage = JSON.parse(xhr.responseText).error_message;
+                $("#error-args").text(errorMessage);
+                $("#error-args").removeClass("d-none");
+            }
+        });
+    }
+});
+</script>
+{%endblock content%}
+
+

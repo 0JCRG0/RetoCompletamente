@@ -1,0 +1,100 @@
+
+/*--------------------------------------------------------------
+# Home
+--------------------------------------------------------------*/
+
+.home-title {
+    font-size: 3.0625rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #240069;
+}
+
+.tokens-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #240069;
+}
+
+#home-steps {
+    color: #240069;
+}
+
+.btn-purple-custom {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #240069;
+    --bs-btn-border-color: #240069;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #91a8f2;
+    --bs-btn-hover-border-color: #91a8f2;
+    --bs-btn-focus-shadow-rgb: 66,70,73;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #240069;
+    --bs-btn-active-border-color: #240069;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #240069;
+    --bs-btn-disabled-border-color: #240069;
+}
+
+#user-dropdown svg {
+    fill: #240069;
+}
+
+.card-header-select-country {
+    padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+    margin-bottom: 0;
+    color: var(--bs-card-cap-color);
+    background-color: #FEFFD6;
+    border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
+}
+
+.card-header-submit-cv {
+    padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+    margin-bottom: 0;
+    color: var(--bs-card-cap-color);
+    background-color: #E0FFCC;
+    border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
+}
+
+.card-header-get-jobs {
+    padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+    margin-bottom: 0;
+    color: var(--bs-card-cap-color);
+    background-color: #FFD6C9;
+    border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
+}
+
+#home-steps .container-fluid .col-lg-3 .card .d-flex svg {
+    fill: #240069;
+}
+
+.card-title {
+    margin-bottom: var(--bs-card-title-spacer-y);
+    color: #000;
+}
+
+/*--------------------------------------------------------------
+# Profile
+--------------------------------------------------------------*/
+
+.nav-link {
+    display: block;
+    padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+    font-size: var(--bs-nav-link-font-size);
+    font-weight: var(--bs-nav-link-font-weight);
+    color: #240069;
+    text-decoration: none;
+    background: 0 0;
+    border: 0;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+    color: #240069;
+}
+
+/*--------------------------------------------------------------
+# FAQ
+--------------------------------------------------------------*/

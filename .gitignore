@@ -15,7 +15,16 @@ blog/
 legal/
 password_reset/
 utils/
-user/
 views.py
 models.py
 forms.py
+new-user/
+registration/
+base-user.html
+billing-user.html
+help-user.html
+home-user.html
+jobs-user.html
+request-jobs.html
+settings.html
+inner-page.html
