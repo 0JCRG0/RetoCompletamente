@@ -1,0 +1,41 @@
+{%extends 'DreamedJobAI/inner-page.html'%}
+
+{%block content%}
+<br><br><br>
+<section>
+	<div class="container">
+		<div class="center">
+			<form method="post" novalidate class="form-signin w-100 m-auto">
+				{% csrf_token %}
+			<h2 class="text-center h3 mb-3 fw-normal">Create your account</h2>
+			<hr>
+			{% for field in form %}
+			<div class="form-floating mb-3">
+				<input type="{{ field.field.widget.input_type }}" class="form-control {% if field.errors %}is-invalid{% endif %}" id="{{ field.auto_id }}" name="{{ field.html_name }}" placeholder="{{ field.label }}" required>
+				<label for="{{ field.auto_id }}">{{ field.label }}</label>
+				{% if field.errors %}
+					<div class="invalid-feedback">
+						{% for error in field.errors %}
+							{{ error }}
+						{% endfor %}
+					</div>
+				{% endif %}
+			{% endfor %}
+			</div>
+			<div class="text-center form-check">
+				{{ form.accept_terms }}
+				<label class="form-check-label" for="{{ form.accept_terms.auto_id }}">
+					I agree and accept the <a href="{% url 'DreamedJobAI:TandC'%}"> Terms and Conditions</a> and <a href="https://fire-blob-ff4.notion.site/RoleHounds-Privacy-Policy-a9779259981b43e4b08d7d12bfa35d7a#40979034f28d4ca58f733c82fec2a229"> Privacy Policy</a>
+				</label>
+			</div>
+			<div class="form-container">
+				<input type="submit" value="Register" class="form-btn">
+			</div>
+			<hr>
+			<p class="text-center">Already have an account? <a href="{% url 'DreamedJobAI:login'%}">Login Here</a></p>
+			</form>
+		</div>
+	</div>
+</section>
+<br><br><br>
+{% endblock content %}
