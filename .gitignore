@@ -14,7 +14,7 @@ inner/
 blog/
 legal/
 password_reset/
-utils/
+_utils/
 views.py
 models.py
 forms.py
