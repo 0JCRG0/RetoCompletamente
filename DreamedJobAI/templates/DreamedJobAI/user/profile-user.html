@@ -18,7 +18,7 @@
         <div class="col-lg-12">
 
             <div id="success-skills" class="alert alert-success text-center d-none">
-                <p>Se han guardado tus lugares recomendados</p>
+                <p>Se han guardado tus actividades seleccionadas</p>
             </div>
 
             {% for message in messages %}
@@ -149,8 +149,8 @@
                                             <div class="spinner-border text-primary" role="status">
                                                 <span class="visually-hidden"></span>
                                             </div>
-                                            <p>Saving your confirmed skills...</p>
-                                            <p>This might take a minute. Please do not refresh the page.</p>
+                                            <p>Guardando tus actividades selecciondas...</p>
+                                            <p>Esto tomará un minuto. No actualices la página.</p>
                                         </div>
                                         <div id="error-args" class="alert alert-danger mt-3 d-none text-center">
                                         </div>
@@ -206,7 +206,7 @@ $(document).ready(function(){
 
                     // Append a confirm button after the list
                     var confirmButton = $('<button/>', {
-                        text: 'Confirm Selected Skills',
+                        text: 'Confirma tus actividades preferidas',
                         id: 'confirmSkills',
                         click: function(){ confirmSkills(); }
                     }).addClass('btn btn-success mt-3');
